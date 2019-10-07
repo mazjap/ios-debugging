@@ -53,7 +53,7 @@ class EntryDetailViewController: UIViewController {
     }
     
     private func updateViews() {
-        if let entry = entry {
+        if let entry = entry, isViewLoaded {
             title = entry.title
             titleTextField.text = entry.title
             bodyTextView.text = entry.bodyText

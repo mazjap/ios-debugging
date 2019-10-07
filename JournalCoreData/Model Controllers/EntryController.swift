@@ -19,35 +19,29 @@ class EntryController {
     }
     
     func createEntry(with title: String, bodyText: String, mood: String) {
-        
         let entry = Entry(title: title, bodyText: bodyText, mood: mood)
         
         put(entry: entry)
-        
         saveToPersistentStore()
     }
     
     func update(entry: Entry, title: String, bodyText: String, mood: String) {
-        
         entry.title = title
         entry.bodyText = bodyText
         entry.timestamp = Date()
         entry.mood = mood
         
         put(entry: entry)
-        
         saveToPersistentStore()
     }
     
     func delete(entry: Entry) {
-        
         CoreDataStack.shared.mainContext.delete(entry)
         deleteEntryFromServer(entry: entry)
         saveToPersistentStore()
     }
     
     private func put(entry: Entry, completion: @escaping ((Error?) -> Void) = { _ in }) {
-        
         let identifier = entry.identifier ?? UUID().uuidString
         let requestURL = baseURL.appendingPathComponent(identifier)
                                 .appendingPathComponent("json")
@@ -74,14 +68,14 @@ class EntryController {
     }
     
     func deleteEntryFromServer(entry: Entry, completion: @escaping ((Error?) -> Void) = { _ in }) {
-        
         guard let identifier = entry.identifier else {
             NSLog("Entry identifier is nil")
             completion(NSError())
             return
         }
         
-        let requestURL = baseURL.appendingPathComponent(identifier).appendingPathExtension("json")
+        let requestURL = baseURL.appendingPathComponent(identifier)
+                                .appendingPathExtension("json")
         var request = URLRequest(url: requestURL)
         request.httpMethod = "DELETE"
         
@@ -97,7 +91,6 @@ class EntryController {
     }
     
     func fetchEntriesFromServer(completion: @escaping ((Error?) -> Void) = { _ in }) {
-        
         let requestURL = baseURL.appendingPathExtension("json")
         var request = URLRequest(url: requestURL)
         request.httpMethod = "GET"
