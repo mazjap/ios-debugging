@@ -93,6 +93,9 @@ class EntriesTableViewController: UITableViewController, NSFetchedResultsControl
         case .delete:
             guard let indexPath = indexPath else { return }
             tableView.deleteRows(at: [indexPath], with: .automatic)
+        @unknown default:
+            NSLog("An unknown error occured")
+            return
         }
     }
     
